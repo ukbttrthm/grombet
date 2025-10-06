@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GromBet - High-Stakes Gaming & Instant Payouts</title>
+    <!-- SEO & Performance Optimization -->
+    <meta name="description" content="GromBet is the leading platform for high-stakes, instant-win games and sports betting. Play instantly and experience the thrill.">
+    <link rel="canonical" href="https://grombet.com">
+
+    <!-- Load Tailwind CSS CDN for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration: Define custom color palette and font -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'grom-black': '#1a1a1a', /* Primary background */
+                        'grom-orange': '#ff5a00', /* Accent color */
+                        'grom-gray': '#2c2c2c', /* Secondary background for hero */
+                        'roulette-red': '#dc3545',
+                        'roulette-black': '#343a40',
+                        'roulette-green-bg': '#02673D', /* Deep casino green */
+                        'roulette-green': '#28a745', 
+                        'text-light': '#f0f0f0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS for Scroll Behavior and Aesthetics -->
+    <style>
+        /* Enable smooth scrolling for anchor links (e.g., header navigation) */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar for a themed aesthetic, improving visual coherence */
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            background-color: '#ff5a00'; /* Grom Orange */
+            border-radius: 20px;
+        }
+        body::-webkit-scrollbar-track {
+            background: '#1a1a1a'; /* Grom Black */
+        }
+
+        /* Hero background with placeholder image and dark overlay */
+        .hero-background {
+            background-image: linear-gradient(to bottom, rgba(44, 44, 44, 0.8), rgba(26, 26, 26, 0.95)), url('https://placehold.co/1920x1080/2c2c2c/ff5a00?text=HIGH+ROLLER+BACKGROUND');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Roulette Container Styling */
+        #roulette {
+            background-color: #02673D; /* Deep casino green background for the game area */
+        }
+
+        /* Number Cell Styling */
+        .number-cell {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .number-cell:hover:not(.bet-green):not(.bet-column) {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ff5a00;
+        }
+
+        /* Color classes */
+        .bet-red { background-color: #dc3545; color: white; }
+        .bet-black { background-color: #343a40; color: white; }
+        .bet-green { background-color: #28a745; color: black; }
+        .bet-outside { background-color: #3c3c3c; color: #f0f0f0; }
+
+        /* Canvas for Wheel */
+        #rouletteCanvas {
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 90, 0, 0.5); /* Inner and outer shadow */
+            background-color: #1a1a1a;
+            /* Make it responsive up to its max size */
+            max-width: 100%;
+            height: auto;
+            border: 8px solid #4a280d; /* Wood effect border */
+            border-radius: 50%; /* Circular canvas container */
+            margin: 0 auto;
+            display: block;
+        }
+        
+    </style>
+</head>
+<body class="bg-grom-black text-white font-sans min-h-screen flex flex-col">
+
+    <!-- Header Section (Sticky Navigation) -->
+    <header class="sticky top-0 z-50 bg-grom-black border-b border-grom-orange/50 shadow-lg" role="banner">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <h1 class="text-3xl font-extrabold tracking-tight">
+                <span class="text-grom-orange">Grom</span><span class="text-white">Bet</span>
+            </h1>
+            
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-8" role="navigation">
+                <a href="#home" class="text-white hover:text-grom-orange transition duration-300 font-medium" aria-label="Go to Home section">Home</a>
+                <a href="#roulette" class="text-white hover:text-grom-orange transition duration-300 font-medium" aria-label="Play Roulette Game">Roulette</a>
+                <a href="#contact" class="text-white hover:text-grom-orange transition duration-300 font-medium" aria-label="Go to Contact section">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="flex-grow" role="main">
+        
+        <!-- 1. Hero Section (Primary Content) -->
+        <section id="home" class="py-16 sm:py-24 hero-background">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+                <!-- Text Content -->
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-4">
+                        The Next Spin, Delivered <span class="text-grom-orange">Fast.</span>
+                    </h2>
+                    <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-lg">
+                        Place your bet, spin the wheel, and watch the instant results roll in. The future of high-stakes gaming is here.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#roulette" class="inline-block">
+                             <button class="bg-grom-orange text-grom-black font-bold py-3 px-8 rounded-xl text-lg hover:bg-orange-400 transition duration-300 shadow-xl" aria-label="Place your first high-stakes bet">
+                                Play Roulette Now
+                            </button>
+                        </a>
+                        <button class="bg-transparent border border-grom-orange text-grom-orange font-bold py-3 px-8 rounded-xl text-lg hover:bg-grom-orange hover:text-grom-black transition duration-300" aria-label="View the latest odds and game rules">
+                            See Latest Odds
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Image/Placeholder -->
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://placehold.co/400x300/ff5a00/1a1a1a?text=Instant+Jackpot" 
+                         alt="A pile of gold coins and poker chips representing a large jackpot." 
+                         class="rounded-2xl shadow-2xl shadow-grom-orange/50 transition-transform duration-500 max-w-full h-auto"
+                         loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Roulette Game Section -->
+        <section id="roulette" class="py-16 sm:py-24 bg-roulette-green-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h3 class="text-4xl font-bold text-center text-text-light mb-12">
+                    European Roulette: The High Roller Table
+                </h3>
+
+                <div class="max-w-6xl mx-auto p-4 md:p-8 bg-roulette-green-bg rounded-3xl shadow-2xl border-4 border-[#4a280d]">
+                    
+                    <!-- Game Info and Controls -->
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:space-x-8 mb-8">
+                        
+                        <!-- Wheel Display (Canvas) -->
+                        <div class="w-full lg:w-1/3 mb-8 lg:mb-0 flex flex-col items-center">
+                            <canvas id="rouletteCanvas" width="350" height="350" class="rounded-full"></canvas>
+                            <p id="messageBox" class="text-center mt-4 text-xl font-bold text-text-light min-h-[1.5em]"></p>
+                        </div>
+
+                        <!-- Balance and Bet Amount Control -->
+                        <div class="w-full lg:w-2/3 space-y-4 p-4 bg-grom-black rounded-xl border border-grom-orange">
+                            <div class="flex justify-between items-center border-b pb-2 border-grom-orange/50">
+                                <span class="text-xl font-medium text-text-light">Your Balance:</span>
+                                <span id="balanceDisplay" class="text-3xl font-extrabold text-grom-orange">$1000.00</span>
+                            </div>
+
+                            <label for="betAmount" class="block text-sm font-medium pt-2 text-text-light">Select Chip Value ($):</label>
+                            <div class="flex space-x-2">
+                                <button onclick="setBetChip(1)" class="w-1/5 p-2 rounded-full bg-red-500 font-bold hover:scale-105 transition shadow-lg text-sm" data-chip="1">$1</button>
+                                <button onclick="setBetChip(5)" class="w-1/5 p-2 rounded-full bg-blue-500 font-bold hover:scale-105 transition shadow-lg text-sm" data-chip="5">$5</button>
+                                <button onclick="setBetChip(10)" class="w-1/5 p-2 rounded-full bg-green-500 font-bold hover:scale-105 transition shadow-lg text-sm" data-chip="10">$10</button>
+                                <button onclick="setBetChip(50)" class="w-1/5 p-2 rounded-full bg-yellow-500 font-bold hover:scale-105 transition shadow-lg text-sm" data-chip="50">$50</button>
+                                <button onclick="setBetChip(100)" class="w-1/5 p-2 rounded-full bg-purple-500 font-bold hover:scale-105 transition shadow-lg text-sm" data-chip="100">$100</button>
+                            </div>
+                            <input type="hidden" id="betAmount" value="10">
+
+                            <button id="spinButton" class="w-full bg-grom-orange text-grom-black font-extrabold py-3 rounded-xl text-xl hover:bg-orange-400 transition duration-300 shadow-lg disabled:opacity-50" onclick="spin()">
+                                SPIN NOW
+                            </button>
+                            <button onclick="resetBets()" class="w-full bg-gray-700 text-white font-bold py-3 rounded-xl text-lg hover:bg-gray-600 transition duration-300 disabled:opacity-50" id="resetButton">
+                                Clear All Bets (<span id="totalBetDisplay">$0.00</span>)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Betting Table (FIXED LAYOUT) -->
+                    <div class="mt-8">
+                        <h4 class="text-2xl font-semibold border-b pb-2 border-text-light/50 text-text-light mb-4">Betting Layout</h4>
+                        
+                        <!-- Main 0 | 1-36 Grid | Column Bets Row -->
+                        <div class="flex space-x-1">
+                            
+                            <!-- 0 Cell (8% width, spans height of 3 rows) -->
+                            <!-- Uses absolute positioning to force the cell to occupy the full vertical space defined by the number grid's height -->
+                            <div class="w-[8%] relative">
+                                <div class="absolute inset-0 p-1">
+                                    <div onclick="placeBet('num_0')" class="number-cell bet-green w-full h-full text-2xl">0</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Numbers 1-36 Grid (84% width, 3 rows, 12 columns) - This section defines the height -->
+                            <div id="numberGrid" class="w-[84%] grid grid-cols-12 grid-rows-3 gap-1 p-1 border border-white">
+                                <!-- Row 1 (3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36) - Top Row (Column 3) -->
+                                <div onclick="placeBet('num_3')" class="number-cell bet-red">3</div>
+                                <div onclick="placeBet('num_6')" class="number-cell bet-black">6</div>
+                                <div onclick="placeBet('num_9')" class="number-cell bet-red">9</div>
+                                <div onclick="placeBet('num_12')" class="number-cell bet-red">12</div>
+                                <div onclick="placeBet('num_15')" class="number-cell bet-black">15</div>
+                                <div onclick="placeBet('num_18')" class="number-cell bet-red">18</div>
+                                <div onclick="placeBet('num_21')" class="number-cell bet-red">21</div>
+                                <div onclick="placeBet('num_24')" class="number-cell bet-black">24</div>
+                                <div onclick="placeBet('num_27')" class="number-cell bet-red">27</div>
+                                <div onclick="placeBet('num_30')" class="number-cell bet-red">30</div>
+                                <div onclick="placeBet('num_33')" class="number-cell bet-black">33</div>
+                                <div onclick="placeBet('num_36')" class="number-cell bet-red">36</div>
+
+                                <!-- Row 2 (2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35) - Middle Row (Column 2) -->
+                                <div onclick="placeBet('num_2')" class="number-cell bet-black">2</div>
+                                <div onclick="placeBet('num_5')" class="number-cell bet-red">5</div>
+                                <div onclick="placeBet('num_8')" class="number-cell bet-black">8</div>
+                                <div onclick="placeBet('num_11')" class="number-cell bet-black">11</div>
+                                <div onclick="placeBet('num_14')" class="number-cell bet-red">14</div>
+                                <div onclick="placeBet('num_17')" class="number-cell bet-black">17</div>
+                                <div onclick="placeBet('num_20')" class="number-cell bet-black">20</div>
+                                <div onclick="placeBet('num_23')" class="number-cell bet-red">23</div>
+                                <div onclick="placeBet('num_26')" class="number-cell bet-black">26</div>
+                                <div onclick="placeBet('num_29')" class="number-cell bet-black">29</div>
+                                <div onclick="placeBet('num_32')" class="number-cell bet-red">32</div>
+                                <div onclick="placeBet('num_35')" class="number-cell bet-black">35</div>
+
+                                <!-- Row 3 (1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34) - Bottom Row (Column 1) -->
+                                <div onclick="placeBet('num_1')" class="number-cell bet-red">1</div>
+                                <div onclick="placeBet('num_4')" class="number-cell bet-black">4</div>
+                                <div onclick="placeBet('num_7')" class="number-cell bet-red">7</div>
+                                <div onclick="placeBet('num_10')" class="number-cell bet-black">10</div>
+                                <div onclick="placeBet('num_13')" class="number-cell bet-black">13</div>
+                                <div onclick="placeBet('num_16')" class="number-cell bet-red">16</div>
+                                <div onclick="placeBet('num_19')" class="number-cell bet-red">19</div>
+                                <div onclick="placeBet('num_22')" class="number-cell bet-black">22</div>
+                                <div onclick="placeBet('num_25')" class="number-cell bet-red">25</div>
+                                <div onclick="placeBet('num_28')" class="number-cell bet-black">28</div>
+                                <div onclick="placeBet('num_31')" class="number-cell bet-black">31</div>
+                                <div onclick="placeBet('num_34')" class="number-cell bet-red">34</div>
+                            </div>
+                            
+                            <!-- Column Bets (8% width, 3 cells high) -->
+                            <div class="w-[8%] flex flex-col justify-between space-y-1">
+                                <!-- Col 3 (Top Row) -->
+                                <div onclick="placeBet('col_3')" class="number-cell bet-outside text-xs flex-grow">2 TO 1</div>
+                                <!-- Col 2 (Middle Row) -->
+                                <div onclick="placeBet('col_2')" class="number-cell bet-outside text-xs flex-grow">2 TO 1</div>
+                                <!-- Col 1 (Bottom Row) -->
+                                <div onclick="placeBet('col_1')" class="number-cell bet-outside text-xs flex-grow">2 TO 1</div>
+                            </div>
+                        </div>
+
+                        <!-- Dozen Bets (1st 12, 2nd 12, 3rd 12) -->
+                        <div class="grid grid-cols-3 gap-1 mt-2">
+                            <div onclick="placeBet('dozen_1')" class="number-cell bet-outside text-sm">1ST 12 (1-12)</div>
+                            <div onclick="placeBet('dozen_2')" class="number-cell bet-outside text-sm">2ND 12 (13-24)</div>
+                            <div onclick="placeBet('dozen_3')" class="number-cell bet-outside text-sm">3RD 12 (25-36)</div>
+                        </div>
+
+                        <!-- Half Bets (1-18, Even, Red, Black, Odd, 19-36) -->
+                        <div class="grid grid-cols-6 gap-1 mt-1">
+                            <div onclick="placeBet('low')" class="number-cell bet-outside text-sm">1 TO 18</div>
+                            <div onclick="placeBet('even')" class="number-cell bet-outside text-sm">EVEN</div>
+                            <div onclick="placeBet('red')" class="number-cell bet-red text-sm">RED</div>
+                            <div onclick="placeBet('black')" class="number-cell bet-black text-sm">BLACK</div>
+                            <div onclick="placeBet('odd')" class="number-cell bet-outside text-sm">ODD</div>
+                            <div onclick="placeBet('high')" class="number-cell bet-outside text-sm">19 TO 36</div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer id="contact" class="bg-grom-black border-t border-grom-orange/50 mt-10" role="contentinfo">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-8 mb-6">
+                <!-- Col 1: Logo and Copyright -->
+                <div>
+                    <h3 class="text-2xl font-extrabold tracking-tight mb-2">
+                        <span class="text-grom-orange">Grom</span><span class="text-white">Bet</span>
+                    </h3>
+                    <p class="text-sm text-gray-500">&copy; 2024 GromBet, Inc.</p>
+                    <p class="text-sm text-gray-500">Gamble Responsibly. 18+</p>
+                </div>
+                
+                <!-- Col 2: Company Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 text-grom-orange">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-grom-orange transition duration-200">About Us</a></li>
+                        <li><a href="#" class="hover:text-grom-orange transition duration-200">Careers</a></li>
+                        <li><a href="#" class="hover:text-grom-orange transition duration-200">Blog</a></li>
+                        <li><a href="#" class="hover:text-grom-orange transition duration-200">Legal & Fair Play</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact & Social -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 text-grom-orange">Get in Touch</h4>
+                    <p class="text-sm text-gray-400 mb-2">support@grombet.com</p>
+                    <div class="flex space-x-4">
+                        <!-- Social Icons using inline SVG for minimal requests -->
+                        <a href="#" class="text-gray-400 hover:text-grom-orange transition duration-200" aria-label="Visit us on Facebook">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.016 3.657 9.184 8.444 9.852v-6.985h-2.115V12h2.115V9.438c0-2.094 1.28-3.235 3.13-3.235 0.89 0 1.666 0.066 1.895 0.096v2.185h-1.293c-1.022 0-1.222 0.485-1.222 1.197V12h2.417l-0.313 2.867h-2.104v6.985C18.343 21.184 22 17.016 22 12 22 6.477 17.523 2 12 2z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-grom-orange transition duration-200" aria-label="Follow us on Twitter">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.254 5.922c-.689.306-1.424.512-2.203.604.793-.475 1.405-1.224 1.696-2.124-.741.441-1.564.762-2.434.935-.698-.744-1.691-1.206-2.793-1.206-2.124 0-3.847 1.722-3.847 3.847 0 .302.034.595.1.874-3.197-.16-6.023-1.688-7.925-4.004-.33.567-.521 1.225-.521 1.936 0 1.334.679 2.513 1.71 3.208-.63-.02-1.222-.194-1.734-.479v.048c0 1.864 1.328 3.418 3.085 3.774-.323.088-.662.136-1.01.136-.247 0-.486-.024-.72-.068.49 1.53 1.91 2.645 3.593 2.673-1.317 1.033-2.984 1.65-4.794 1.65-.312 0-.617-.018-.918-.053 1.706 1.092 3.737 1.73 5.933 1.73 7.118 0 11.002-5.908 11.002-11.003 0-.168-.004-.336-.011-.504.757-.546 1.413-1.228 1.936-2.007z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="text-center pt-6 border-t border-grom-gray/50">
+                <p class="text-sm text-gray-600">Built with <span class="text-grom-orange">passion</span> for speed and chance.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript: Game Logic and UI Functions -->
+    <script>
+        // --- Navigation Highlighter Logic (Kept for continuity) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('header nav a');
+            const sections = document.querySelectorAll('main section[id]');
+            
+            const updateActiveLink = () => {
+                let currentSectionId = '';
+                const scrollOffset = window.pageYOffset;
+                
+                sections.forEach(section => {
+                    if (scrollOffset >= section.offsetTop - 100) { 
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    const linkTargetId = link.getAttribute('href').substring(1);
+                    
+                    link.classList.remove('text-grom-orange');
+                    link.classList.add('text-white');
+
+                    if (linkTargetId === currentSectionId) {
+                        link.classList.remove('text-white');
+                        link.classList.add('text-grom-orange');
+                    }
+                });
+            }; // <-- Closing the updateActiveLink function correctly
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+            
+            // --- Roulette Game Initialization ---
+            initRoulette();
+        }); // <-- Closing the DOMContentLoaded listener correctly
+
+        // --- Roulette Game Variables ---
+        let balance = 1000;
+        let bets = {}; // Stores bets: {'red': 10, 'num_15': 50}
+        let currentChipValue = 10;
+        let isSpinning = false;
+        
+        // European Wheel Numbers in clockwise order starting from 0 (used for drawing the wheel)
+        const ROULETTE_ORDER = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+        const POCKET_ANGLE = (2 * Math.PI) / 37; // Angle for each pocket
+
+        // Mapping for colors (0 is Green)
+        const numberColors = {
+            0: 'green', 1: 'red', 2: 'black', 3: 'red', 4: 'black', 5: 'red', 6: 'black', 7: 'red', 8: 'black', 9: 'red', 10: 'black', 
+            11: 'black', 12: 'red', 13: 'black', 14: 'red', 15: 'black', 16: 'red', 17: 'black', 18: 'red', 
+            19: 'red', 20: 'black', 21: 'red', 22: 'black', 23: 'red', 24: 'black', 25: 'red', 26: 'black', 
+            27: 'red', 28: 'black', 29: 'black', 30: 'red', 31: 'black', 32: 'red', 33: 'black', 34: 'red', 
+            35: 'black', 36: 'red'
+        };
+
+        // --- DOM Elements ---
+        let balanceDisplay;
+        let totalBetDisplay;
+        let messageBox;
+        let spinButton;
+        let resetButton;
+        let rouletteCanvas;
+        let ctx;
+        
+        // Canvas Drawing state
+        let currentWheelRotation = 0; // The angle of the wheel's rotation
+
+        /** Initializes the game UI and state. */
+        function initRoulette() {
+            balanceDisplay = document.getElementById('balanceDisplay');
+            totalBetDisplay = document.getElementById('totalBetDisplay');
+            messageBox = document.getElementById('messageBox');
+            spinButton = document.getElementById('spinButton');
+            resetButton = document.getElementById('resetButton');
+            rouletteCanvas = document.getElementById('rouletteCanvas');
+            ctx = rouletteCanvas.getContext('2d');
+            
+            updateUI();
+            messageBox.textContent = 'Select a chip value and click on the table to place a bet.';
+            drawWheel(0); // Draw initial static wheel
+            document.querySelectorAll('[data-chip]').forEach(btn => {
+                if (parseInt(btn.dataset.chip) === currentChipValue) {
+                    btn.classList.add('ring-4', 'ring-grom-orange');
+                }
+            });
+        }
+
+        /** Sets the current chip value for betting. */
+        window.setBetChip = function(value) {
+            currentChipValue = value;
+            messageBox.textContent = `Betting chip set to $${value}.00`;
+            
+            // Highlight the active chip button
+            document.querySelectorAll('[data-chip]').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-grom-orange');
+                if (parseInt(btn.dataset.chip) === value) {
+                    btn.classList.add('ring-4', 'ring-grom-orange');
+                }
+            });
+        }
+
+        /** Updates the balance and total bet displays. */
+        function updateUI() {
+            const totalBet = calculateTotalBet();
+            balanceDisplay.textContent = `$${balance.toFixed(2)}`;
+            totalBetDisplay.textContent = `$${totalBet.toFixed(2)}`;
+            
+            spinButton.disabled = totalBet === 0 || isSpinning;
+            resetButton.disabled = totalBet === 0 || isSpinning;
+        }
+
+        /** Calculates the total amount currently bet. */
+        function calculateTotalBet() {
+            return Object.values(bets).reduce((sum, amount) => sum + amount, 0);
+        }
+
+        /** Places a bet on the specified type. */
+        window.placeBet = function(type) {
+            if (isSpinning) return;
+            const amount = currentChipValue;
+
+            if (balance < amount) {
+                showMessage('Insufficient balance! Cannot place a $'+amount+' bet.', 'text-red-500');
+                return;
+            }
+
+            // Deduct from balance
+            balance -= amount;
+            
+            // Add to or create bet
+            bets[type] = (bets[type] || 0) + amount;
+
+            showMessage(`Bet $${amount.toFixed(2)} placed on ${type.replace('num_', '#')}. Total: $${bets[type].toFixed(2)}`, 'text-grom-orange');
+            updateUI();
+        }
+
+        /** Resets all current bets. */
+        window.resetBets = function() {
+            if (isSpinning) return;
+            const totalBet = calculateTotalBet();
+            balance += totalBet; // Refund the bet amount
+            bets = {};
+            showMessage('All bets cleared. Balance refunded.', 'text-white');
+            updateUI();
+        }
+
+        /** Checks if the winning number satisfies the bet type. */
+        function checkWin(winningNumber, winningColor, betType) {
+            const number = parseInt(winningNumber);
+            const isRed = winningColor === 'red';
+            const isBlack = winningColor === 'black';
+
+            // Straight Bets (Single Number)
+            if (betType === `num_${number}`) return true;
+
+            // Simple Outside Bets (1:1 payout)
+            if (betType === 'red' && isRed) return true;
+            if (betType === 'black' && isBlack) return true;
+            if (betType === 'even' && number !== 0 && number % 2 === 0) return true;
+            if (betType === 'odd' && number % 2 !== 0) return true;
+            if (betType === 'low' && number >= 1 && number <= 18) return true;
+            if (betType === 'high' && number >= 19 && number <= 36) return true;
+
+            // Dozens Bets (2:1 payout)
+            if (betType === 'dozen_1' && number >= 1 && number <= 12) return true;
+            if (betType === 'dozen_2' && number >= 13 && number <= 24) return true;
+            if (betType === 'dozen_3' && number >= 25 && number <= 36) return true;
+
+            // Column Bets (2:1 payout)
+            // Column 1 (1, 4, 7, ..., 34) is the bottom row in the layout
+            if (betType === 'col_1' && number % 3 === 1 && number !== 0) return true;
+            // Column 2 (2, 5, 8, ..., 35) is the middle row
+            if (betType === 'col_2' && number % 3 === 2 && number !== 0) return true;
+            // Column 3 (3, 6, 9, ..., 36) is the top row
+            if (betType === 'col_3' && number % 3 === 0 && number !== 0) return true;
+
+            return false;
+        }
+
+        /** Resolves bets against the winning number. */
+        function resolveBets(winningNumber, winningColor) {
+            let winnings = 0;
+            let totalBet = 0;
+
+            for (const key in bets) {
+                const amount = bets[key];
+                totalBet += amount;
+
+                if (checkWin(winningNumber, winningColor, key)) {
+                    // Payout calculations
+                    if (key.startsWith('num_')) {
+                        winnings += amount * 36; // 35:1 payout + original bet (36x total)
+                    } else if (key.startsWith('dozen_') || key.startsWith('col_')) {
+                        winnings += amount * 3; // 2:1 payout + original bet (3x total)
+                    } else {
+                        winnings += amount * 2; // 1:1 payout + original bet (2x total)
+                    }
+                }
+            }
+
+            // Update balance
+            balance += winnings;
+
+            // Display results
+            if (winnings > 0) {
+                const profit = winnings - totalBet;
+                showMessage(`WINNER! Number ${winningNumber} (${winningColor.toUpperCase()}). You won $${winnings.toFixed(2)} (Net: $${profit.toFixed(2)})!`, 'text-yellow-400');
+            } else {
+                showMessage(`LOSS! Number ${winningNumber} (${winningColor.toUpperCase()}). All bets lost.`, 'text-red-500');
+            }
+        }
+
+        /** Simulates the wheel spin and resolves the game. */
+        window.spin = function() {
+            if (isSpinning) return;
+            if (calculateTotalBet() === 0) {
+                showMessage('Place a bet before spinning!', 'text-red-500');
+                return;
+            }
+
+            isSpinning = true;
+            updateUI();
+            showMessage('Wheel spinning... GOOD LUCK!', 'text-grom-orange');
+
+            // 1. Determine the winning number (0 to 36)
+            const winningNumber = Math.floor(Math.random() * 37);
+            const winningColor = numberColors[winningNumber];
+            
+            // 2. Find the index of the winning number in the wheel's order
+            const winningIndex = ROULETTE_ORDER.indexOf(winningNumber);
+            
+            animateSpin(winningIndex, winningNumber, winningColor, () => {
+                // Animation complete, resolve the bets
+                resolveBets(winningNumber, winningColor);
+                isSpinning = false;
+                bets = {}; // Clear bets after resolution
+                updateUI();
+            });
+        }
+
+        /** Draws the static roulette wheel with sectors. */
+        function drawWheel(rotationAngle) {
+            const size = rouletteCanvas.width;
+            const center = size / 2;
+            const outerRadius = center - 10;
+            const innerRadius = outerRadius * 0.2;
+            
+            ctx.clearRect(0, 0, size, size);
+
+            // 1. Draw the Outer Wood Rim (Brown)
+            ctx.beginPath();
+            ctx.arc(center, center, outerRadius + 8, 0, 2 * Math.PI);
+            ctx.fillStyle = '#4a280d'; // Dark brown
+            ctx.fill();
+
+            // 2. Draw the Main Wheel Body (Dark Inner)
+            ctx.beginPath();
+            ctx.arc(center, center, outerRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fill();
+
+            // 3. Draw the Sectors (Red/Black/Green)
+            for (let i = 0; i < ROULETTE_ORDER.length; i++) {
+                const number = ROULETTE_ORDER[i];
+                const color = numberColors[number];
+                
+                let startAngle = rotationAngle + (i * POCKET_ANGLE) - (Math.PI / 2); // Start angle, offset by -PI/2 to start from the top
+                let endAngle = startAngle + POCKET_ANGLE;
+                
+                ctx.beginPath();
+                ctx.arc(center, center, outerRadius, startAngle, endAngle);
+                ctx.lineTo(center, center);
+                ctx.closePath();
+                
+                if (color === 'red') ctx.fillStyle = '#dc3545';
+                else if (color === 'black') ctx.fillStyle = '#343a40';
+                else ctx.fillStyle = '#28a745'; // Green (0)
+                
+                ctx.fill();
+
+                // Draw numbers (only for static wheel or large wheel)
+                // For a small wheel, drawing numbers is messy, so we'll draw a white line
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Draw number text (positioned in the middle of the sector)
+                const middleAngle = (startAngle + endAngle) / 2;
+                const textX = center + (outerRadius * 0.8) * Math.cos(middleAngle);
+                const textY = center + (outerRadius * 0.8) * Math.sin(middleAngle);
+
+                ctx.save();
+                ctx.translate(textX, textY);
+                ctx.rotate(middleAngle + Math.PI / 2); // Rotate text radially
+                
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 12px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(number.toString(), 0, 0);
+
+                ctx.restore();
+            }
+            
+            // 4. Draw the Center Hub (Brass/Gold effect)
+            ctx.beginPath();
+            ctx.arc(center, center, innerRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffd700'; // Gold color
+            ctx.fill();
+            
+            // 5. Draw the Ball Pointer (Fixed at the top)
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(center, outerRadius * 0.1, 5, 0, 2 * Math.PI); // Pointer near the top edge
+            ctx.fill();
+        }
+
+        /** Animates the spinning wheel effect on the canvas for exactly 8 seconds. */
+        function animateSpin(winningIndex, winningNumber, winningColor, callback) {
+            const DURATION_MS = 8000; // 8 seconds, as requested
+            const MIN_SPINS = 5; // Minimum 5 full rotations to look realistic
+            
+            // The target angle must land the winning pocket exactly under the pointer (at the top, which is -PI/2)
+            // The starting angle of the winning pocket is: winningIndex * POCKET_ANGLE - PI/2
+            // We want the total rotation to be (2*PI * MIN_SPINS) PLUS the necessary offset to land.
+            
+            // Angle to stop at (relative to the initial position)
+            const winningTargetAngle = (winningIndex * POCKET_ANGLE); 
+            
+            // Ensure the winning sector stops at the top (aligned with the pointer at -PI/2 angle in the circle)
+            // We need to stop after full rotations + target angle
+            const totalRotationOffset = (2 * Math.PI * MIN_SPINS) + winningTargetAngle;
+            
+            // Convert to a negative angle since we are spinning counter-clockwise
+            const finalAngle = currentWheelRotation - totalRotationOffset;
+            
+            let startTime = Date.now();
+            
+            function easeOutCubic(t) {
+                // Easing function for smooth deceleration
+                return 1 - Math.pow(1 - t, 3);
+            }
+
+            function draw(timestamp) {
+                if (isSpinning === false) return; // Safety check
+                
+                const elapsed = Date.now() - startTime;
+                let progress = Math.min(1, elapsed / DURATION_MS);
+                
+                // Calculate the eased rotation progress
+                const easedProgress = easeOutCubic(progress);
+
+                // Calculate the current rotation angle
+                // The angle starts at currentWheelRotation and moves towards finalAngle based on easedProgress
+                const rotation = currentWheelRotation * (1 - easedProgress) + finalAngle * easedProgress;
+
+                // Draw the wheel at the new rotation angle
+                drawWheel(rotation);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(draw);
+                } else {
+                    // Animation complete
+                    currentWheelRotation = rotation; // Lock the wheel at the final position
+                    isSpinning = false;
+                    drawWheel(rotation); // Final clean draw
+                    callback();
+                }
+            }
+            
+            requestAnimationFrame(draw);
+        }
+
+        /** Displays a message in the message box. */
+        function showMessage(text, colorClass) {
+            messageBox.className = `text-center mt-4 text-xl font-bold min-h-[1.5em] ${colorClass}`;
+            messageBox.textContent = text;
+        }
+
+    </script>
+</body>
+</html>
